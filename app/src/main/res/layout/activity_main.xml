@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp"
+    android:orientation="vertical">
+    <Button
+        android:onClick="goToScanActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="跳转到扫描页面" />
+
+    <RelativeLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center">
+        <cn.demomaster.qdzxing.ScanSurfaceView
+            android:id="@+id/ssfv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <cn.demomaster.qdzxing.ScanMakerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <Button
+        android:onClick="startScan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="开启扫描" />
+    <Button
+        android:onClick="stopScan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="停止扫描" />
+</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
