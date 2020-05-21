@@ -7,6 +7,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
+import com.google.zxing.ResultPointCallback;
 import com.google.zxing.client.android.CaptureActivityHandler;
 import com.google.zxing.client.android.camera.CameraManager;
 
@@ -85,21 +86,24 @@ public class ScanHelper {
     }
 
     public static interface OnScanResultListener {
-        public void handleDecode(Result obj, Bitmap barcode, float scaleFactor);
+        //解码结果
+        void handleDecode(Result obj, Bitmap barcode, float scaleFactor);
+        //扫描到的疑似点
+        void foundPossiblePoint(ResultPoint resultPoint);
     }
 
     /**
      * 扫描到的疑似点
      */
-    private ScanSurfaceView.ResultPointCallback resultPointCallback;
-    public ScanSurfaceView.ResultPointCallback getResultPointCallback() {
+    private ResultPointCallback resultPointCallback;
+    public ResultPointCallback getResultPointCallback() {
         if(resultPointCallback==null){
-            resultPointCallback = new ScanSurfaceView.ResultPointCallback() {
+            resultPointCallback = new ResultPointCallback() {
                 @Override
                 public void foundPossibleResultPoint(ResultPoint resultPoint) {
                     for (Map.Entry entry : resultPointCallbackHashMap.entrySet()) {
                         try {
-                            ScanSurfaceView.ResultPointCallback resultPointCallback = (ScanSurfaceView.ResultPointCallback) entry.getValue();
+                            ResultPointCallback resultPointCallback = (ResultPointCallback) entry.getValue();
                             if (resultPointCallback != null) {
                                 resultPointCallback.foundPossibleResultPoint(resultPoint);
                             }
@@ -113,13 +117,13 @@ public class ScanHelper {
         return resultPointCallback;
     }
 
-    Map<Integer, ScanSurfaceView.ResultPointCallback> resultPointCallbackHashMap ;
+    Map<Integer, ResultPointCallback> resultPointCallbackHashMap ;
 
     /**
      * 添加扫码疑似点实时回调
      * @param resultPointCallback
      */
-    public void addResultPointCallback(ScanSurfaceView.ResultPointCallback resultPointCallback) {
+    public void addResultPointCallback(ResultPointCallback resultPointCallback) {
         resultPointCallbackHashMap.put(resultPointCallback.hashCode(), resultPointCallback);
     }
 

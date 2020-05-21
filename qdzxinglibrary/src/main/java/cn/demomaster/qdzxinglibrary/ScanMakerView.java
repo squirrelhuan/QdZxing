@@ -36,6 +36,7 @@ import android.view.Display;
 import android.view.View;
 
 import com.google.zxing.ResultPoint;
+import com.google.zxing.ResultPointCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ import static cn.demomaster.qdzxinglibrary.ScanSurfaceView.TAG;
  *
  * @author dswitkin@google.com (Daniel Switkin)
  */
-public final class ScanMakerView extends View implements ScanSurfaceView.ResultPointCallback {
+public final class ScanMakerView extends View implements ResultPointCallback {
 
     private static final int[] SCANNER_ALPHA = {0, 64, 128, 192, 255, 192, 128, 64};
     private static final long ANIMATION_DELAY = 80L;
@@ -77,7 +78,6 @@ public final class ScanMakerView extends View implements ScanSurfaceView.ResultP
 
         // Initialize these once for performance rather than calling them every time in onDraw().
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        Resources resources = getResources();
         laserColor = scanLineColor;
         resultPointColor = pointColor;
         scannerAlpha = 0;
@@ -106,6 +106,32 @@ public final class ScanMakerView extends View implements ScanSurfaceView.ResultP
         drawMark(canvas);
     }
 
+    int markerWidth = 200;
+    int markerHeight = 200;
+
+    /**
+     * 设置marker宽度
+     * @param markerWidth
+     */
+    public void setMarkerWidth(int markerWidth) {
+        this.markerWidth = markerWidth;
+    }
+    /**
+     * 设置marker高度
+     * @param markerHeight
+     */
+    public void setMarkerHeight(int markerHeight) {
+        this.markerHeight = markerHeight;
+    }
+
+    /**
+     * marker颜色
+     * @param maskColor
+     */
+    public void setMaskColor(int maskColor) {
+        this.maskColor = maskColor;
+    }
+
     private void drawMark(Canvas canvas) {
         if (ScanHelper.getInstance().getCameraManager(getContext()) == null) {
             return; // not ready yet, early draw before done configuring
@@ -120,14 +146,12 @@ public final class ScanMakerView extends View implements ScanSurfaceView.ResultP
 
         float centerX = width/2;
         float centerY = height/2;
-        int newwidth = Math.min(windowWidth, width);
-        int newheight = Math.min(windowHeight,height);
 
         // Draw the exterior (i.e. outside the framing rect) darkened
         canvas.drawColor(maskColor);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         paint.setColor(Color.BLACK);
-        RectF rectF = new RectF(centerX-newwidth/2, centerY-newheight/2, centerX+newwidth/2, centerY+newheight/2);
+        RectF rectF = new RectF(centerX-markerWidth/2, centerY-markerHeight/2, centerX+markerWidth/2, centerY+markerHeight/2);
         frame = new Rect((int) rectF.left,(int)rectF.top,(int)rectF.right,(int)rectF.bottom);
         canvas.drawRoundRect(rectF, roundRadius, roundRadius, paint);
         paint.setXfermode(null);
@@ -144,7 +168,7 @@ public final class ScanMakerView extends View implements ScanSurfaceView.ResultP
         //paint.setColor(Color.RED);    //设置画笔的颜色为绿色
         paint.setStyle(Paint.Style.FILL);//设置画笔类型为填充
         /***********绘制圆弧*************/
-        RectF rectf_head=new RectF(centerX-newwidth/2, rectF.top, centerX+newwidth/2, rectF.top+100);//确定外切矩形范围
+        RectF rectf_head=new RectF(centerX-markerWidth/2, rectF.top, centerX+markerWidth/2, rectF.top+100);//确定外切矩形范围
         rectf_head.offset(0, 0);//使rectf_head所确定的矩形向右偏移100像素，向下偏移20像素
 
         Shader mShader = new LinearGradient(centerX,rectf_head.top,centerX,rectf_head.bottom,new int[] {0xaa00ff00,0x3300ff00},null, Shader.TileMode.CLAMP);

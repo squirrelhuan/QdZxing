@@ -18,6 +18,7 @@ package cn.demomaster.qdzxing.sample;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -25,12 +26,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import com.google.zxing.Result;
+import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.HelpActivity;
 import com.google.zxing.client.android.Intents;
 import com.google.zxing.client.android.PreferencesActivity;
 import com.google.zxing.client.android.share.ShareActivity;
 
+import cn.demomaster.qdzxing.MainActivity;
 import cn.demomaster.qdzxing.R;
 import cn.demomaster.qdzxinglibrary.ScanHelper;
 import cn.demomaster.qdzxinglibrary.ScanMakerView;
@@ -60,7 +65,18 @@ public class MyCaptureActivity extends Activity {
 
         scanMakerView = (ScanMakerView) findViewById(R.id.viewfinder_view);
         surfaceView= (ScanSurfaceView) findViewById(R.id.preview_view);
-        surfaceView.addMakerView(scanMakerView);
+        //扫码回调
+        surfaceView.setOnScanResultListener(new ScanHelper.OnScanResultListener() {
+            @Override
+            public void handleDecode(Result obj, Bitmap barcode, float scaleFactor) {
+                Toast.makeText(MyCaptureActivity.this,obj.toString(),Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void foundPossiblePoint(ResultPoint resultPoint) {
+                scanMakerView.foundPossibleResultPoint(resultPoint);
+            }
+        });
     }
 
     @Override

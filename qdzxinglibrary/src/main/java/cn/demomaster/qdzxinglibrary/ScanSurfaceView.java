@@ -6,10 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import androidx.annotation.RequiresApi;
 
@@ -29,8 +31,9 @@ import java.util.Map;
 /**
  * 背景层预览相机图层
  */
-public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanResultListener{
-    public static String TAG="CGQ";
+public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanResultListener {
+    public static String TAG = "CGQ";
+
     public ScanSurfaceView(Context context) {
         super(context);
         init();
@@ -54,12 +57,13 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
 
     //检测环境光
     private AmbientLightManager ambientLightManager;
+
     public void init() {
         cameraManager = ScanHelper.getInstance().getCameraManager(getContext());
         ambientLightManager = new AmbientLightManager(getContext());
         ambientLightManager.start(cameraManager);
-        ScanHelper.getInstance().addOnScanResultListener(getContext(),this);
-        if(callback==null){
+        ScanHelper.getInstance().addOnScanResultListener(getContext(), this);
+        if (callback == null) {
             callback = new SurfaceHolder.Callback() {
                 @Override
                 public void surfaceCreated(SurfaceHolder holder) {
@@ -86,18 +90,18 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
     public void start() {
         cameraManager = ScanHelper.getInstance().getCameraManager(getContext());
         getHolder().addCallback(callback);
-        if(ambientLightManager==null) {
+        if (ambientLightManager == null) {
             ambientLightManager = new AmbientLightManager(getContext());
         }
         ambientLightManager.start(cameraManager);
-        ScanHelper.getInstance().addOnScanResultListener(getContext(),this);
+        ScanHelper.getInstance().addOnScanResultListener(getContext(), this);
         initCamera(getHolder());
 
         ScanHelper.getInstance().getHandler().resetQuitSynchronously();
         ScanHelper.getInstance().restartDelay(100);
     }
 
-    public void stop(){
+    public void stop() {
         ambientLightManager.stop();
         getHolder().removeCallback(callback);
         if (ScanHelper.getInstance().getHandler() != null) {
@@ -114,6 +118,7 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
     private Map<DecodeHintType, ?> decodeHints;
     private String characterSet;
     private CameraManager cameraManager;
+
     private void initCamera(SurfaceHolder surfaceHolder) {
         if (surfaceHolder == null) {
             throw new IllegalStateException("No SurfaceHolder provided");
@@ -121,9 +126,9 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
         if (cameraManager.isOpen()) {
             Log.e(TAG, "initCamera() while already open -- late SurfaceView callback?");
             cameraManager.setHolder(surfaceHolder);
-           // throw new Exception("initCamera() while already open -- late SurfaceView callback?");
-           // return;
-        }else {
+            // throw new Exception("initCamera() while already open -- late SurfaceView callback?");
+            // return;
+        } else {
             try {
                 cameraManager.openDriver(surfaceHolder);
             } catch (IOException ioe) {
@@ -135,17 +140,38 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
             }
         }
         // Creating the handler starts the preview, which can also throw a RuntimeException.
-        if (cameraManager!=null&&cameraManager.isOpen()&&ScanHelper.getInstance().getHandler() == null) {
+        if (cameraManager != null && cameraManager.isOpen() && ScanHelper.getInstance().getHandler() == null) {
             ScanHelper.getInstance().setHandler(new CaptureActivityHandler(getContext(), decodeFormats, decodeHints, characterSet, cameraManager));
 
         }
     }
 
+    ScanHelper.OnScanResultListener mOnScanResultListener;
+    ResultPointCallback resultPointCallback;
+
+    public void setOnScanResultListener(ScanHelper.OnScanResultListener onScanResultListener) {
+        this.mOnScanResultListener = onScanResultListener;
+        if(resultPointCallback==null){
+            resultPointCallback = new ResultPointCallback() {
+                @Override
+                public void foundPossibleResultPoint(ResultPoint point) {
+                    if (mOnScanResultListener != null) {
+                        mOnScanResultListener.foundPossiblePoint(point);
+                    }
+                }
+            };
+        }
+        ScanHelper.getInstance().addResultPointCallback(resultPointCallback);
+    }
+
     @Override
     public void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
-        Log.i(TAG,"扫码完成："+rawResult.toString());
+        Log.i(TAG, "扫码完成：" + rawResult == null ? "null" : rawResult.toString());
+        if (mOnScanResultListener != null) {
+            mOnScanResultListener.handleDecode(rawResult, barcode, scaleFactor);
+        }
         //震动
-        Vibrator vibrator = (Vibrator)getContext().getSystemService(getContext().VIBRATOR_SERVICE);
+        Vibrator vibrator = (Vibrator) getContext().getSystemService(getContext().VIBRATOR_SERVICE);
         long[] patter = {50, 50};
         vibrator.vibrate(patter, -1);
 
@@ -155,6 +181,11 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
             //TODO beepManager.playBeepSoundAndVibrate();
             drawResultPoints(barcode, scaleFactor, rawResult);
         }
+    }
+
+    @Override
+    public void foundPossiblePoint(ResultPoint resultPoint) {
+
     }
 
     /**
@@ -185,19 +216,6 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
                 }
             }
         }
-    }
-
-    /**
-     * 添加疑似点接收
-     * @param resultPointCallback
-     */
-    public void addMakerView(ResultPointCallback resultPointCallback){
-        ScanHelper.getInstance().addResultPointCallback(resultPointCallback);
-    }
-
-    public static interface ResultPointCallback{
-        void foundPossibleResultPoint(ResultPoint point);
-
     }
 
 }
