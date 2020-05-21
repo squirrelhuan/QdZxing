@@ -6,18 +6,21 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.zxing.client.android.CaptureActivity;
-
 import cn.demomaster.qdzxing.sample.MyCaptureActivity;
+import cn.demomaster.qdzxinglibrary.ScanMakerView;
+import cn.demomaster.qdzxinglibrary.ScanSurfaceView;
 
 public class MainActivity extends AppCompatActivity {
-
+    //遮盖层视图
+    ScanMakerView smv;
     ScanSurfaceView ssfv ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ssfv = findViewById(R.id.ssfv);
+        smv = findViewById(R.id.smv);
+        ssfv.addMakerView(smv);
     }
 
     public void goToScanActivity(View view){

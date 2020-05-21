@@ -32,9 +32,9 @@ import com.google.zxing.client.android.PreferencesActivity;
 import com.google.zxing.client.android.share.ShareActivity;
 
 import cn.demomaster.qdzxing.R;
-import cn.demomaster.qdzxing.ScanHelper;
-import cn.demomaster.qdzxing.ScanMakerView;
-import cn.demomaster.qdzxing.ScanSurfaceView;
+import cn.demomaster.qdzxinglibrary.ScanHelper;
+import cn.demomaster.qdzxinglibrary.ScanMakerView;
+import cn.demomaster.qdzxinglibrary.ScanSurfaceView;
 
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a
@@ -57,15 +57,16 @@ public class MyCaptureActivity extends Activity {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.mycapture);
+
+        scanMakerView = (ScanMakerView) findViewById(R.id.viewfinder_view);
+        surfaceView= (ScanSurfaceView) findViewById(R.id.preview_view);
+        surfaceView.addMakerView(scanMakerView);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        scanMakerView = (ScanMakerView) findViewById(R.id.viewfinder_view);
-        surfaceView= (ScanSurfaceView) findViewById(R.id.preview_view);
-        surfaceView.addMakerView(scanMakerView);
     }
 
     @Override
