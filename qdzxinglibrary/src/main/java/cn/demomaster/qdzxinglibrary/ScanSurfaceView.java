@@ -63,6 +63,8 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
         ambientLightManager = new AmbientLightManager(getContext());
         ambientLightManager.start(cameraManager);
         ScanHelper.getInstance().addOnScanResultListener(getContext(), this);
+        ScanHelper.getInstance().addResultPointCallback(getResultPointCallback());
+
         if (callback == null) {
             callback = new SurfaceHolder.Callback() {
                 @Override
@@ -95,6 +97,7 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
         }
         ambientLightManager.start(cameraManager);
         ScanHelper.getInstance().addOnScanResultListener(getContext(), this);
+        ScanHelper.getInstance().addResultPointCallback(getResultPointCallback());
         initCamera(getHolder());
 
         ScanHelper.getInstance().getHandler().resetQuitSynchronously();
@@ -147,10 +150,10 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
     }
 
     ScanHelper.OnScanResultListener mOnScanResultListener;
+
     ResultPointCallback resultPointCallback;
 
-    public void setOnScanResultListener(ScanHelper.OnScanResultListener onScanResultListener) {
-        this.mOnScanResultListener = onScanResultListener;
+    public ResultPointCallback getResultPointCallback() {
         if(resultPointCallback==null){
             resultPointCallback = new ResultPointCallback() {
                 @Override
@@ -161,7 +164,11 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
                 }
             };
         }
-        ScanHelper.getInstance().addResultPointCallback(resultPointCallback);
+        return resultPointCallback;
+    }
+
+    public void setOnScanResultListener(ScanHelper.OnScanResultListener onScanResultListener) {
+        this.mOnScanResultListener = onScanResultListener;
     }
 
     @Override
@@ -179,7 +186,7 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
         if (fromLiveScan) {
             // Then not from history, so beep/vibrate and we have an image to draw on
             //TODO beepManager.playBeepSoundAndVibrate();
-            drawResultPoints(barcode, scaleFactor, rawResult);
+            //drawResultPoints(barcode, scaleFactor, rawResult);
         }
     }
 
@@ -195,7 +202,7 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
      * @param scaleFactor amount by which thumbnail was scaled
      * @param rawResult   The decoded results which contains the points to draw.
      */
-    private void drawResultPoints(Bitmap barcode, float scaleFactor, Result rawResult) {
+   /* private void drawResultPoints(Bitmap barcode, float scaleFactor, Result rawResult) {
         ResultPoint[] points = rawResult.getResultPoints();
         if (points != null && points.length > 0) {
             Canvas canvas = new Canvas(barcode);
@@ -216,6 +223,6 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
                 }
             }
         }
-    }
+    }*/
 
 }
