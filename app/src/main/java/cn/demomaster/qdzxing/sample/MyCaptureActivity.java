@@ -65,6 +65,8 @@ public class MyCaptureActivity extends Activity {
 
         scanMakerView = (ScanMakerView) findViewById(R.id.viewfinder_view);
         surfaceView= (ScanSurfaceView) findViewById(R.id.preview_view);
+        scanMakerView.setMarkerHeight(500);//设置扫码框大小
+        scanMakerView.setMarkerWidth(500);//设置扫码框大小
         //扫码回调
         surfaceView.setOnScanResultListener(new ScanHelper.OnScanResultListener() {
             @Override
@@ -74,6 +76,7 @@ public class MyCaptureActivity extends Activity {
 
             @Override
             public void foundPossiblePoint(ResultPoint resultPoint) {
+                //扫描到疑似点，疑似点闪烁处理
                 scanMakerView.foundPossibleResultPoint(resultPoint);
             }
         });
@@ -82,7 +85,7 @@ public class MyCaptureActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        surfaceView.start();
     }
 
     @Override

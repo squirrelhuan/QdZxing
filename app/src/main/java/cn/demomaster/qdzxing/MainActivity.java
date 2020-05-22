@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         iv_code = findViewById(R.id.iv_code);
         ssfv = findViewById(R.id.ssfv);
         smv = findViewById(R.id.smv);
-        smv.setMarkerHeight(500);
-        smv.setMarkerWidth(500);
+        smv.setMarkerHeight(400);//设置扫码框大小
+        smv.setMarkerWidth(400);//设置扫码框大小
         //扫码回调
         ssfv.setOnScanResultListener(new ScanHelper.OnScanResultListener() {
             @Override
@@ -58,21 +58,8 @@ public class MainActivity extends AppCompatActivity {
             if(checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
                 String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
                 requestPermissions( permissions, 1024);
-            }else {
-
             }
         }
-        /*Intent intent = new Intent();
-        intent.setAction(Intents.Encode.ACTION);
-        QRCodeEncoder qrCodeEncoder = null;
-        try {
-            qrCodeEncoder = new QRCodeEncoder(this, intent, 100, false);
-            Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-            iv_code.setImageBitmap(bitmap);
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }*/
-       // startActivity(new Intent(MainActivity.this, PreferencesActivity.class));
     }
 
     @Override
@@ -102,5 +89,9 @@ public class MainActivity extends AppCompatActivity {
        EditText et_code_str =  findViewById(R.id.et_code_str);
         Bitmap bitmap = CodeCreator.createQRCode(et_code_str.getText().toString(), 500, 500, null);
         iv_code.setImageBitmap(bitmap);
+    }
+
+    public void setting(View view) {
+        startActivity(new Intent(MainActivity.this, PreferencesActivity.class));
     }
 }

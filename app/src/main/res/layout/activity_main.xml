@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="30dp"
+    android:clipChildren="true"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -17,13 +18,15 @@
     <RelativeLayout
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center">
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:clipChildren="false">
         <!--背景层用于显示camera视图-->
         <cn.demomaster.qdzxinglibrary.ScanSurfaceView
             android:id="@+id/ssfv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"/>
         <!--遮罩层用于显示扫描窗口和扫描动画-->
         <cn.demomaster.qdzxinglibrary.ScanMakerView
             android:id="@+id/smv"
@@ -48,6 +51,12 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="停止扫描" />
+        <Button
+            android:onClick="setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Setting" />
     </LinearLayout>
 
     <LinearLayout
@@ -72,6 +81,7 @@
         android:id="@+id/iv_code"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:background="@color/colorPrimary"/>
 

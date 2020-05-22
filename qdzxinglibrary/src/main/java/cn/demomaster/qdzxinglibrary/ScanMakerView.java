@@ -164,14 +164,14 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         //paint.setColor(Color.RED);    //设置画笔的颜色为绿色
         paint.setStyle(Paint.Style.FILL);//设置画笔类型为填充
         /***********绘制圆弧*************/
-        RectF rectf_head=new RectF(centerX-markerWidth/2, rectF.top, centerX+markerWidth/2, rectF.top+100);//确定外切矩形范围
+      /*  RectF rectf_head=new RectF(centerX-markerWidth/2, rectF.top, centerX+markerWidth/2, rectF.top+100);//确定外切矩形范围
         rectf_head.offset(0, 0);//使rectf_head所确定的矩形向右偏移100像素，向下偏移20像素
 
         Shader mShader = new LinearGradient(centerX,rectf_head.top,centerX,rectf_head.bottom,new int[] {0xaa00ff00,0x3300ff00},null, Shader.TileMode.CLAMP);
 //新建一个线性渐变，前两个参数是渐变开始的点坐标，第三四个参数是渐变结束的点的坐标。连接这2个点就拉出一条渐变线了，玩过PS的都懂。然后那个数组是渐变的颜色。下一个参数是渐变颜色的分布，如果为空，每个颜色就是均匀分布的。最后是模式，这里设置的是循环渐变
         paint.setShader(mShader);
         canvas.drawArc(rectf_head, -10, -160, false, paint);//绘制圆弧，不含圆心
-
+*/
         float scaleX = frame.width() / (float) previewFrame.width();
         float scaleY = frame.height() / (float) previewFrame.height();
 

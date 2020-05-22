@@ -69,8 +69,8 @@ public class CaptureActivityHandler extends Handler {
         ResultPointCallback resultPointCallback = new ResultPointCallback() {
             @Override
             public void foundPossibleResultPoint(ResultPoint point) {
-                if(ScanHelper.getInstance().getResultPointCallback()!=null)
-                ScanHelper.getInstance().getResultPointCallback().foundPossibleResultPoint(point);
+                if(ScanHelper.getInstance().resultPointCallback!=null)
+                ScanHelper.getInstance().resultPointCallback.foundPossibleResultPoint(point);
             }
         };
         return resultPointCallback;

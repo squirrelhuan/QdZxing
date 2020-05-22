@@ -2,18 +2,13 @@ package cn.demomaster.qdzxinglibrary;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Vibrator;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.RequiresApi;
@@ -70,8 +65,8 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
         cameraManager = ScanHelper.getInstance().getCameraManager(getContext());
         ambientLightManager = new AmbientLightManager(getContext());
         ambientLightManager.start(cameraManager);
-        ScanHelper.getInstance().addOnScanResultListener(getContext(), this);
-        ScanHelper.getInstance().addResultPointCallback(getResultPointCallback());
+        ScanHelper.getInstance().setOnScanResultListener(getContext(),mOnScanResultListener);
+        //ScanHelper.getInstance().setResultPointCallback(getContext(), getResultPointCallback());
 
         if (callback == null) {
             callback = new SurfaceHolder.Callback() {
@@ -102,7 +97,7 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
                                     layoutParams.width = (int) (d*height);
                                     setLayoutParams(layoutParams);
                                     Log.e("CGQ","设置宽"+layoutParams.width +",getWidth()="+getWidth());
-                                }else if(wh1<wh2){//纵向长
+                                }else if(wh1>wh2){//纵向长
                                     float d = ((float)point.x/point.y);
                                     layoutParams.height = (int) (d*width);
                                     setLayoutParams(layoutParams);
@@ -131,8 +126,8 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
             ambientLightManager = new AmbientLightManager(getContext());
         }
         ambientLightManager.start(cameraManager);
-        ScanHelper.getInstance().addOnScanResultListener(getContext(), this);
-        ScanHelper.getInstance().addResultPointCallback(getResultPointCallback());
+        ScanHelper.getInstance().setOnScanResultListener(getContext(),this);
+        //ScanHelper.getInstance().addResultPointCallback(getContext(), getResultPointCallback());
         initCamera(getHolder());
 
         ScanHelper.getInstance().getHandler().resetQuitSynchronously();
@@ -185,48 +180,22 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
     }
 
     ScanHelper.OnScanResultListener mOnScanResultListener;
-
-    ResultPointCallback resultPointCallback;
-    public ResultPointCallback getResultPointCallback() {
-        if(resultPointCallback==null){
-            resultPointCallback = new ResultPointCallback() {
-                @Override
-                public void foundPossibleResultPoint(ResultPoint point) {
-                    if (mOnScanResultListener != null) {
-                        mOnScanResultListener.foundPossiblePoint(point);
-                    }
-                }
-            };
-        }
-        return resultPointCallback;
-    }
-
     public void setOnScanResultListener(ScanHelper.OnScanResultListener onScanResultListener) {
         this.mOnScanResultListener = onScanResultListener;
     }
 
     @Override
-    public void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
-        Log.i(TAG, "扫码完成：" + rawResult == null ? "null" : rawResult.toString());
+    public void handleDecode(Result obj, Bitmap barcode, float scaleFactor) {
         if (mOnScanResultListener != null) {
-            mOnScanResultListener.handleDecode(rawResult, barcode, scaleFactor);
-        }
-        //震动
-        Vibrator vibrator = (Vibrator) getContext().getSystemService(getContext().VIBRATOR_SERVICE);
-        long[] patter = {50, 50};
-        vibrator.vibrate(patter, -1);
-
-        boolean fromLiveScan = barcode != null;
-        if (fromLiveScan) {
-            // Then not from history, so beep/vibrate and we have an image to draw on
-            //TODO beepManager.playBeepSoundAndVibrate();
-            //drawResultPoints(barcode, scaleFactor, rawResult);
+            mOnScanResultListener.handleDecode(obj,barcode,scaleFactor);
         }
     }
 
     @Override
     public void foundPossiblePoint(ResultPoint resultPoint) {
-
+        if (mOnScanResultListener != null) {
+            mOnScanResultListener.foundPossiblePoint(resultPoint);
+        }
     }
 
     /**
