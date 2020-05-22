@@ -60,7 +60,12 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
 
     //检测环境光
     private AmbientLightManager ambientLightManager;
-    boolean hasAdjusted;
+    boolean adjustedSize;
+
+    public void setAdjustedSize(boolean hasAdjusted) {
+        this.adjustedSize = hasAdjusted;
+    }
+
     public void init() {
         cameraManager = ScanHelper.getInstance().getCameraManager(getContext());
         ambientLightManager = new AmbientLightManager(getContext());
@@ -80,10 +85,10 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
 
                 @Override
                 public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                    if(ScanHelper.getInstance().getCameraManager(getContext())!=null&&ScanHelper.getInstance().getCameraManager(getContext()).getConfigManager()!=null){
+                    if(!adjustedSize&&ScanHelper.getInstance().getCameraManager(getContext())!=null&&ScanHelper.getInstance().getCameraManager(getContext()).getConfigManager()!=null){
                         Point point = ScanHelper.getInstance().getCameraManager(getContext()).getConfigManager().getBestPreviewSize();
-                        if(point!=null&&!hasAdjusted){
-                            hasAdjusted = true;
+                        if(point!=null){
+                            adjustedSize = true;
                             ViewGroup.LayoutParams layoutParams = getLayoutParams();
 
                             //长宽比

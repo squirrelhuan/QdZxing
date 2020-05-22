@@ -296,7 +296,6 @@ public final class CameraManager {
   /**
    * Allows third party apps to specify the scanning rectangle dimensions, rather than determine
    * them automatically based on screen resolution.
-   *
    * @param width The width in pixels to scan.
    * @param height The height in pixels to scan.
    */
@@ -338,8 +337,7 @@ public final class CameraManager {
    /*TODO 这里会指定区域扫描，不在区域内的二维码无法识别 return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,
                                         rect.width(), rect.height(), false);*/
    //修改后整个预览区域都可以识别
-    return new PlanarYUVLuminanceSource(data, width, height, 0, 0,
-            width, height, false);
+    return new PlanarYUVLuminanceSource(data, width, height, 0, 0,width, height, false);
   }
 
 }
