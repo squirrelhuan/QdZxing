@@ -335,8 +335,11 @@ public final class CameraManager {
       return null;
     }
     // Go ahead and assume it's YUV rather than die.
-    return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,
-                                        rect.width(), rect.height(), false);
+   /*TODO 这里会指定区域扫描，不在区域内的二维码无法识别 return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,
+                                        rect.width(), rect.height(), false);*/
+   //修改后整个预览区域都可以识别
+    return new PlanarYUVLuminanceSource(data, width, height, 0, 0,
+            width, height, false);
   }
 
 }
