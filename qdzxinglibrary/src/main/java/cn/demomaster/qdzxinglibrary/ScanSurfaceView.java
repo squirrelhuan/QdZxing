@@ -106,7 +106,6 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
                             }else {
                                 Log.e("CGQ","长宽比例正常");
                             }
-                            Log.e("CGQ","layoutParams.width="+getWidth()+"，layoutParams.height="+getHeight());
                         }
                     }
                 }
