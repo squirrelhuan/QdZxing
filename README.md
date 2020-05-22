@@ -23,7 +23,7 @@ layout
             android:layout_height="match_parent"/>
     </RelativeLayout>
 ```
-
+Activity
 ```
 //遮盖层视图
     ScanMakerView scanMakerView;
