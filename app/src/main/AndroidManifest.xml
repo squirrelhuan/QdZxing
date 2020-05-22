@@ -28,7 +28,7 @@
         android:theme="@style/AppTheme"
         android:allowBackup="true">
         <activity android:name="com.google.zxing.client.android.CaptureActivity"/>
-        <activity android:name=".sample.MyCaptureActivity"/>
+        <activity android:name=".sample.MyCaptureActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".MainActivity"
             android:clearTaskOnLaunch="true"
             android:stateNotNeeded="true"

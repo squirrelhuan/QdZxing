@@ -4,11 +4,13 @@
 
   <cn.demomaster.qdzxinglibrary.ScanSurfaceView android:id="@+id/preview_view"
                android:layout_width="match_parent"
-               android:layout_height="match_parent"/>
+               android:layout_height="match_parent"
+      android:layout_gravity="center"/>
 
   <cn.demomaster.qdzxinglibrary.ScanMakerView
       android:id="@+id/viewfinder_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:layout_gravity="center"
       />
 </merge>

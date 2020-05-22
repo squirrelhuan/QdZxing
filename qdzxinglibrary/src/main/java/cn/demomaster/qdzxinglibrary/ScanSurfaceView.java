@@ -3,7 +3,9 @@ package cn.demomaster.qdzxinglibrary;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Vibrator;
 import android.text.TextUtils;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.RequiresApi;
 
@@ -57,7 +60,7 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
 
     //检测环境光
     private AmbientLightManager ambientLightManager;
-
+    boolean hasAdjusted;
     public void init() {
         cameraManager = ScanHelper.getInstance().getCameraManager(getContext());
         ambientLightManager = new AmbientLightManager(getContext());
@@ -77,7 +80,35 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
 
                 @Override
                 public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                    if(ScanHelper.getInstance().getCameraManager(getContext())!=null&&ScanHelper.getInstance().getCameraManager(getContext()).getConfigManager()!=null){
+                        Point point = ScanHelper.getInstance().getCameraManager(getContext()).getConfigManager().getBestPreviewSize();
+                        if(point!=null&&!hasAdjusted){
+                            hasAdjusted = true;
+                            ViewGroup.LayoutParams layoutParams = getLayoutParams();
 
+                            //长宽比
+                            float wh1 = (float) point.x/point.y;
+                            float wh2 = (float) getHeight()/getWidth();
+                            Log.e("CGQ","预览宽："+point.y+"，预览长："+point.x+",getWidth()="+getWidth()+"，getHeight()="+getHeight()+",wh1="+wh1+",wh2="+wh2);
+                            if(wh1!=wh2){
+                                if(wh1<wh2){//横向宽
+                                   float d = ((float)point.y/point.x);
+                                   // layoutParams.height = (int) (((float)point.x/point.y)*width);
+                                    layoutParams.width = (int) (d*height);
+                                    setLayoutParams(layoutParams);
+                                    Log.e("CGQ","设置宽"+layoutParams.width +",getWidth()="+getWidth());
+                                }else if(wh1<wh2){//纵向长
+                                    float d = ((float)point.x/point.y);
+                                    layoutParams.height = (int) (d*width);
+                                    setLayoutParams(layoutParams);
+                                    Log.e("CGQ","设置高"+layoutParams.height +",getHeight()="+getHeight());
+                                }
+                            }else {
+                                Log.e("CGQ","长宽比例正常");
+                            }
+                            Log.e("CGQ","layoutParams.width="+getWidth()+"，layoutParams.height="+getHeight());
+                        }
+                    }
                 }
 
                 @Override
@@ -152,7 +183,6 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
     ScanHelper.OnScanResultListener mOnScanResultListener;
 
     ResultPointCallback resultPointCallback;
-
     public ResultPointCallback getResultPointCallback() {
         if(resultPointCallback==null){
             resultPointCallback = new ResultPointCallback() {

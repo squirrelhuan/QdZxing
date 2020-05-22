@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
+import com.google.zxing.client.android.PreferencesActivity;
 import com.google.zxing.client.android.encode.EncodeActivity;
 
 import cn.demomaster.qdzxing.sample.MyCaptureActivity;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (WriterException e) {
             e.printStackTrace();
         }*/
-       // startActivity(new Intent(MainActivity.this,EncodeActivity.class));
+       // startActivity(new Intent(MainActivity.this, PreferencesActivity.class));
     }
 
     @Override

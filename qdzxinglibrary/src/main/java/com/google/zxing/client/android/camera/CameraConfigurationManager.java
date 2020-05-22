@@ -35,7 +35,7 @@ import com.google.zxing.client.android.camera.open.OpenCamera;
  * configure the camera hardware.
  */
 @SuppressWarnings("deprecation") // camera APIs
-final class CameraConfigurationManager {
+public class CameraConfigurationManager {
 
   private static final String TAG = "CameraConfiguration";
 
@@ -47,7 +47,7 @@ final class CameraConfigurationManager {
   private Point bestPreviewSize;
   private Point previewSizeOnScreen;
 
-  CameraConfigurationManager(Context context) {
+   CameraConfigurationManager(Context context) {
     this.context = context;
   }
 
@@ -201,7 +201,7 @@ final class CameraConfigurationManager {
     }
   }
 
-  Point getBestPreviewSize() {
+  public Point getBestPreviewSize() {
     return bestPreviewSize;
   }
 

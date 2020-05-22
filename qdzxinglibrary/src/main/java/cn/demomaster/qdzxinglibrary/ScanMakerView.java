@@ -91,13 +91,9 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         screenHeight = point.y;
         Log.i(TAG, "screenWidth = " + screenWidth + ",screenHeight = " + screenHeight);
         //x = 1440,y = 2768
-        windowWidth = 300;
-        windowHeight = 300;
     }
     int screenWidth;
     int screenHeight;
-    int windowWidth;
-    int windowHeight;
 
     float roundRadius = 5f;
     @SuppressLint("DrawAllocation")

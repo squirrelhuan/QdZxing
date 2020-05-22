@@ -48,7 +48,7 @@ public final class CameraManager {
   private static final int MAX_FRAME_HEIGHT = 675; // = 5/8 * 1080
 
   private final Context context;
-  private final CameraConfigurationManager configManager;
+  private CameraConfigurationManager configManager;
   private OpenCamera camera;
   private AutoFocusManager autoFocusManager;
   private Rect framingRect;
@@ -68,6 +68,10 @@ public final class CameraManager {
     this.context = context;
     this.configManager = new CameraConfigurationManager(context);
     previewCallback = new PreviewCallback(configManager);
+  }
+
+  public CameraConfigurationManager getConfigManager() {
+    return configManager;
   }
 
   /**
