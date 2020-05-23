@@ -103,7 +103,7 @@ public class ScanHelper {
      * @param onScanResultListener
      */
     public void setOnScanResultListener(Context context, OnScanResultListener onScanResultListener) {
-        mContext = context;
+        mContext = context.getApplicationContext();
         mOnScanResultListenerSub = onScanResultListener;
     }
 
