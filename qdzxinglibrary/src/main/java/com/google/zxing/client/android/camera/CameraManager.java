@@ -340,4 +340,8 @@ public final class CameraManager {
     return new PlanarYUVLuminanceSource(data, width, height, 0, 0,width, height, false);
   }
 
+
+  public Camera getCamera() {
+    return camera.getCamera();
+  }
 }

@@ -1,9 +1,12 @@
 package cn.demomaster.qdzxinglibrary;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.hardware.Camera;
 import android.os.Vibrator;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
@@ -138,5 +141,48 @@ public class ScanHelper {
      */
     public void unregisterListener(Context context){
         //resultPointCallbackHashMap.remove(context);
+    }
+
+
+    /**
+     * @return 是否有闪光灯
+     */
+    public boolean isSupportCameraLedFlash(Context context) {
+        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+    }
+
+    public void openFlash(Context context){
+        setFlashState(context,true);
+    }
+    public void closeFlash(Context context){
+        setFlashState(context,false);
+    }
+
+    public void setFlashState(Context context,boolean open){
+        if(!isSupportCameraLedFlash(context)){
+            Toast.makeText(context,"闪光灯不存在",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Camera.Parameters parameter;
+        parameter = getCameraManager(context).getCamera().getParameters();
+        if(open){
+            //打开闪光灯
+            parameter.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            getCameraManager(context).getCamera().setParameters(parameter);
+        }else {
+            //关闭闪光灯
+            parameter.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+            getCameraManager(context).getCamera().setParameters(parameter);
+        }
+    }
+
+    public boolean isFlashOpened(Context context){
+        if(!isSupportCameraLedFlash(context)){
+            return false;
+        }
+        Camera.Parameters parameter;
+        parameter = getCameraManager(context).getCamera().getParameters();
+        String state = parameter.getFlashMode();
+        return state==null?false:!state.equals(Camera.Parameters.FLASH_MODE_OFF);
     }
 }

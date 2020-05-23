@@ -24,8 +24,10 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
@@ -54,6 +56,7 @@ public class MyCaptureActivity extends Activity {
     ScanMakerView scanMakerView;
     //背景预览图层
     ScanSurfaceView surfaceView;
+    ImageView iv_light;
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -78,6 +81,18 @@ public class MyCaptureActivity extends Activity {
             public void foundPossiblePoint(ResultPoint resultPoint) {
                 //扫描到疑似点，疑似点闪烁处理
                 scanMakerView.foundPossibleResultPoint(resultPoint);
+            }
+        });
+
+        iv_light = findViewById(R.id.iv_light);
+        iv_light.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ScanHelper.getInstance().isFlashOpened(MyCaptureActivity.this)){
+                    ScanHelper.getInstance().closeFlash(MyCaptureActivity.this);
+                }else {
+                    ScanHelper.getInstance().openFlash(MyCaptureActivity.this);
+                }
             }
         });
     }
