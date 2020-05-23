@@ -84,14 +84,20 @@ public class MainActivity extends AppCompatActivity {
     public void startScan(View view) {
         ssfv.start();
     }
-
+    Bitmap bitmap;
     public void generateQrcode(View view) {
        EditText et_code_str =  findViewById(R.id.et_code_str);
-        Bitmap bitmap = CodeCreator.createQRCode(et_code_str.getText().toString(), 500, 500, null);
+        bitmap = CodeCreator.createQRCode(et_code_str.getText().toString(), 500, 500, null);
         iv_code.setImageBitmap(bitmap);
+        qrcode();
     }
 
     public void setting(View view) {
         startActivity(new Intent(MainActivity.this, PreferencesActivity.class));
+    }
+
+    public void qrcode(){
+       Result result = CodeCreator.readQRcode(bitmap);
+       Toast.makeText(MainActivity.this,"qr="+result.toString(),Toast.LENGTH_LONG).show();
     }
 }

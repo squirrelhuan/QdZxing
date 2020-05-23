@@ -2,13 +2,23 @@ package cn.demomaster.qdzxinglibrary;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.text.TextUtils;
+import android.widget.ImageView;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.ChecksumException;
 import com.google.zxing.EncodeHintType;
+import com.google.zxing.FormatException;
 import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.Result;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import java.util.Hashtable;
@@ -87,4 +97,28 @@ public class CodeCreator {
         }
     }
 
+
+    //识别二维码的函数
+    public static Result readQRcode(Bitmap QRbmp){
+        int width = QRbmp.getWidth();
+        int height = QRbmp.getHeight();
+        int[] data = new int[width * height];
+         QRbmp.getPixels(data, 0, width, 0, 0, width, height);    //得到像素
+        RGBLuminanceSource source = new RGBLuminanceSource(width,height,data);   //RGBLuminanceSource对象
+        BinaryBitmap bitmap1 = new BinaryBitmap(new HybridBinarizer(source));
+        QRCodeReader reader = new QRCodeReader();
+        Result re = null;
+        try {
+            //得到结果
+            re = reader.decode(bitmap1);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        } catch (ChecksumException e) {
+            e.printStackTrace();
+        } catch (FormatException e) {
+            e.printStackTrace();
+        }
+
+        return re;
+    }
 }
