@@ -59,9 +59,9 @@ public class ScanHelper {
     private Map<DecodeHintType, ?> decodeHints;
     private String characterSet;*/
    public Context mContext;
-    public void generateHandler(Context context,Collection<BarcodeFormat> decodeFormats,Map<DecodeHintType, ?> decodeHints,String characterSet) {
+   /* public void generateHandler(Context context,Collection<BarcodeFormat> decodeFormats,Map<DecodeHintType, ?> decodeHints,String characterSet) {
         this.handler = new CaptureActivityHandler(context, decodeFormats, decodeHints, characterSet, cameraManager);
-    }
+    }*/
 
     /**
      * 处理扫码结果，分发给监听器

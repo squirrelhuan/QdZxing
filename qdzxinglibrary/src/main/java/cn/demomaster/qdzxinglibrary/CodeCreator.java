@@ -1,14 +1,18 @@
 package cn.demomaster.qdzxinglibrary;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
+import com.google.zxing.DecodeHintType;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.FormatException;
 import com.google.zxing.MultiFormatReader;
@@ -17,12 +21,18 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
 import com.google.zxing.WriterException;
+import com.google.zxing.client.android.DecodeFormatManager;
+import com.google.zxing.client.android.PreferencesActivity;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class CodeCreator {
     /*生成二维码*/
@@ -99,12 +109,12 @@ public class CodeCreator {
     }
 
     //识别二维码的函数
-    public static Result readQRcode(Bitmap QRbmp){
+    public static Result readQRcode(Context activity, Bitmap QRbmp) {
         int width = QRbmp.getWidth();
         int height = QRbmp.getHeight();
         int[] data = new int[width * height];
-         QRbmp.getPixels(data, 0, width, 0, 0, width, height);    //得到像素
-        RGBLuminanceSource source = new RGBLuminanceSource(width,height,data);   //RGBLuminanceSource对象
+        QRbmp.getPixels(data, 0, width, 0, 0, width, height);    //得到像素
+        RGBLuminanceSource source = new RGBLuminanceSource(width, height, data);   //RGBLuminanceSource对象
 
         BinaryBitmap bitmap1 = new BinaryBitmap(new HybridBinarizer(source));
         QRCodeReader reader = new QRCodeReader();
@@ -112,15 +122,42 @@ public class CodeCreator {
         try {
             //得到结果
             re = reader.decode(bitmap1);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         /**
          * 第一次识别，直接识别，若失败，则进行图像二维码定位处理
          */
-        if(re==null){
+        if (re == null) {
             // 对图像进行处理，定位图像中的二维码，将其截取出来
+            /*指定为UTF-8*/
+            Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
+            hints = new EnumMap<>(DecodeHintType.class);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+            Collection<BarcodeFormat> decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
+            if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_1D_PRODUCT, true)) {
+                decodeFormats.addAll(DecodeFormatManager.PRODUCT_FORMATS);
+            }
+            if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_1D_INDUSTRIAL, true)) {
+                decodeFormats.addAll(DecodeFormatManager.INDUSTRIAL_FORMATS);
+            }
+            if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_QR, true)) {
+                decodeFormats.addAll(DecodeFormatManager.QR_CODE_FORMATS);
+            }
+            if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_DATA_MATRIX, true)) {
+                decodeFormats.addAll(DecodeFormatManager.DATA_MATRIX_FORMATS);
+            }
+            if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_AZTEC, false)) {
+                decodeFormats.addAll(DecodeFormatManager.AZTEC_FORMATS);
+            }
+            if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_PDF417, false)) {
+                decodeFormats.addAll(DecodeFormatManager.PDF417_FORMATS);
+            }
+
+            //hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, resultPointCallback);
+            hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);
             MultiFormatReader multiFormatReader = new MultiFormatReader();
+            multiFormatReader.setHints(hints);
             try {
                 re = multiFormatReader.decodeWithState(bitmap1);
             } catch (NotFoundException e) {
