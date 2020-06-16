@@ -166,14 +166,6 @@ public class CodeCreator {
                 multiFormatReader.reset();
             }
         }
-        /* catch (NotFoundException e) {
-            e.printStackTrace();
-        } catch (ChecksumException e) {
-            e.printStackTrace();
-        } catch (FormatException e) {
-            e.printStackTrace();
-        }*/
-
         return re;
     }
 }
