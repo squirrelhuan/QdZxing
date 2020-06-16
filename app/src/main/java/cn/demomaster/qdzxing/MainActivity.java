@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
@@ -97,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void qrcode(){
-       Result result = CodeCreator.readQRcode(bitmap);
+       Result result = CodeCreator.readQRcode(this,bitmap);
        Toast.makeText(MainActivity.this,"qr="+result.toString(),Toast.LENGTH_LONG).show();
     }
 }

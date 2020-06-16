@@ -110,6 +110,9 @@ public class CodeCreator {
 
     //识别二维码的函数
     public static Result readQRcode(Context activity, Bitmap QRbmp) {
+        if(QRbmp==null){
+            return null;
+        }
         int width = QRbmp.getWidth();
         int height = QRbmp.getHeight();
         int[] data = new int[width * height];
