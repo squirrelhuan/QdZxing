@@ -98,7 +98,6 @@ public class CodeCreator {
         }
     }
 
-
     //识别二维码的函数
     public static Result readQRcode(Bitmap QRbmp){
         int width = QRbmp.getWidth();
