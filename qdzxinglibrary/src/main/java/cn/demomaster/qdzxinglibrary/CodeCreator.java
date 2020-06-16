@@ -130,9 +130,7 @@ public class CodeCreator {
          */
         if (re == null) {
             // 对图像进行处理，定位图像中的二维码，将其截取出来
-            /*指定为UTF-8*/
             Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
-            hints = new EnumMap<>(DecodeHintType.class);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
             Collection<BarcodeFormat> decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
             if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_1D_PRODUCT, true)) {
