@@ -11,6 +11,7 @@ import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.FormatException;
+import com.google.zxing.MultiFormatReader;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.RGBLuminanceSource;
@@ -105,19 +106,37 @@ public class CodeCreator {
         int[] data = new int[width * height];
          QRbmp.getPixels(data, 0, width, 0, 0, width, height);    //得到像素
         RGBLuminanceSource source = new RGBLuminanceSource(width,height,data);   //RGBLuminanceSource对象
+
         BinaryBitmap bitmap1 = new BinaryBitmap(new HybridBinarizer(source));
         QRCodeReader reader = new QRCodeReader();
         Result re = null;
         try {
             //得到结果
             re = reader.decode(bitmap1);
-        } catch (NotFoundException e) {
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**
+         * 第一次识别，直接识别，若失败，则进行图像二维码定位处理
+         */
+        if(re==null){
+            // 对图像进行处理，定位图像中的二维码，将其截取出来
+            MultiFormatReader multiFormatReader = new MultiFormatReader();
+            try {
+                re = multiFormatReader.decodeWithState(bitmap1);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                multiFormatReader.reset();
+            }
+        }
+        /* catch (NotFoundException e) {
             e.printStackTrace();
         } catch (ChecksumException e) {
             e.printStackTrace();
         } catch (FormatException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return re;
     }
