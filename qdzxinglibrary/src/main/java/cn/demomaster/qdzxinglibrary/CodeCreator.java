@@ -128,9 +128,7 @@ public class CodeCreator {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /**
-         * 第一次识别，直接识别，若失败，则进行图像二维码定位处理
-         */
+        //第一次识别，直接识别，若失败，则进行图像二维码定位处理
         if (re == null) {
             // 对图像进行处理，定位图像中的二维码，将其截取出来
             Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
