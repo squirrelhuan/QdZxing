@@ -49,6 +49,7 @@ final class DecodeHandler extends Handler {
   private boolean running = true;
 
   public DecodeHandler(Context activity, Map<DecodeHintType,Object> hints) {
+    super();
     multiFormatReader = new MultiFormatReader();
     multiFormatReader.setHints(hints);
     this.activity = activity;

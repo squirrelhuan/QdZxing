@@ -8,17 +8,11 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.ResultPointCallback;
 import com.google.zxing.client.android.CaptureActivityHandler;
 import com.google.zxing.client.android.camera.CameraManager;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import static cn.demomaster.qdzxinglibrary.ScanSurfaceView.TAG;
 
@@ -115,7 +109,7 @@ public class ScanHelper {
         ScanHelper.getInstance().getHandler().sendEmptyMessageDelayed(R.id.restart_preview, l);
     }
 
-    public static interface OnScanResultListener {
+    public interface OnScanResultListener {
         //解码结果
         void handleDecode(Result obj, Bitmap barcode, float scaleFactor);
         //扫描到的疑似点
@@ -168,12 +162,11 @@ public class ScanHelper {
         if(open){
             //打开闪光灯
             parameter.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-            getCameraManager(context).getCamera().setParameters(parameter);
         }else {
             //关闭闪光灯
             parameter.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-            getCameraManager(context).getCamera().setParameters(parameter);
         }
+        getCameraManager(context).getCamera().setParameters(parameter);
     }
 
     public boolean isFlashOpened(Context context){

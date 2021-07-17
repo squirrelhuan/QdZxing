@@ -42,7 +42,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scaleType="center"
-        android:src="@drawable/share_via_barcode"
         android:paddingRight="24dip"
         tools:ignore="ContentDescription"/>
 

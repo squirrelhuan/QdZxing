@@ -55,6 +55,7 @@ final class LoadPackagesAsyncTask extends AsyncTask<Object,Object,List<AppInfo>>
   private final ListActivity activity;
 
   LoadPackagesAsyncTask(ListActivity activity) {
+    super();
     this.activity = activity;
   }
 

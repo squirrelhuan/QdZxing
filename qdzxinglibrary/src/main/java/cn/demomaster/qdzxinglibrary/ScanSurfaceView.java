@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Build;
-import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -17,7 +16,6 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
-import com.google.zxing.ResultPointCallback;
 import com.google.zxing.client.android.AmbientLightManager;
 import com.google.zxing.client.android.CaptureActivityHandler;
 import com.google.zxing.client.android.camera.CameraManager;
@@ -60,14 +58,14 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
     public void setAdjustedSize(boolean hasAdjusted) {
         this.adjustedSize = hasAdjusted;
     }
-
+    
     public void init() {
         cameraManager = ScanHelper.getInstance().getCameraManager(getContext());
         ambientLightManager = new AmbientLightManager(getContext());
         ambientLightManager.start(cameraManager);
         ScanHelper.getInstance().setOnScanResultListener(getContext(),mOnScanResultListener);
         //ScanHelper.getInstance().setResultPointCallback(getContext(), getResultPointCallback());
-
+        
         if (callback == null) {
             callback = new SurfaceHolder.Callback() {
                 @Override
@@ -89,22 +87,22 @@ public class ScanSurfaceView extends SurfaceView implements ScanHelper.OnScanRes
                             //长宽比
                             float wh1 = (float) point.x/point.y;
                             float wh2 = (float) getHeight()/getWidth();
-                            Log.e("CGQ","预览宽："+point.y+"，预览长："+point.x+",getWidth()="+getWidth()+"，getHeight()="+getHeight()+",wh1="+wh1+",wh2="+wh2);
+                           // Log.e("CGQ","预览宽："+point.y+"，预览长："+point.x+",getWidth()="+getWidth()+"，getHeight()="+getHeight()+",wh1="+wh1+",wh2="+wh2);
                             if(wh1!=wh2){
                                 if(wh1<wh2){//横向宽
                                    float d = ((float)point.y/point.x);
                                    // layoutParams.height = (int) (((float)point.x/point.y)*width);
                                     layoutParams.width = (int) (d*height);
                                     setLayoutParams(layoutParams);
-                                    Log.e("CGQ","设置宽"+layoutParams.width +",getWidth()="+getWidth());
+                                   // Log.e("CGQ","设置宽"+layoutParams.width +",getWidth()="+getWidth());
                                 }else if(wh1>wh2){//纵向长
                                     float d = ((float)point.x/point.y);
                                     layoutParams.height = (int) (d*width);
                                     setLayoutParams(layoutParams);
-                                    Log.e("CGQ","设置高"+layoutParams.height +",getHeight()="+getHeight());
+                                   // Log.e("CGQ","设置高"+layoutParams.height +",getHeight()="+getHeight());
                                 }
                             }else {
-                                Log.e("CGQ","长宽比例正常");
+                               // Log.e("CGQ","长宽比例正常");
                             }
                         }
                     }

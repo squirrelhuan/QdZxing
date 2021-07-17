@@ -14,7 +14,6 @@
  limitations under the License.
  -->
 <resources>
-    <string name="app_name">Barcode Scanner</string>
     <string name="app_picker_name">Applications</string>
     <string name="bookmark_picker_name">Bookmarks</string>
     <string name="button_add_calendar">Add to calendar</string>
@@ -137,6 +136,5 @@
     <string name="result_text">Found plain text</string>
     <string name="result_uri">Found URL</string>
     <string name="result_wifi">Found WLAN Configuration</string>
-    <string name="sbc_name">Google Book Search</string>
     <string name="wifi_changing_network">Requesting connection to network\u2026</string>
 </resources>

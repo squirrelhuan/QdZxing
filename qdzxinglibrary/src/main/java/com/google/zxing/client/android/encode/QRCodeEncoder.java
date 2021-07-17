@@ -20,9 +20,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -175,6 +178,7 @@ final class QRCodeEncoder {
   }
 
   // Handles send intents from the Contacts app, retrieving a contact as a VCARD.
+  @RequiresApi(api = Build.VERSION_CODES.KITKAT)
   private void encodeFromStreamExtra(Intent intent) throws WriterException {
     format = BarcodeFormat.QR_CODE;
     Bundle bundle = intent.getExtras();

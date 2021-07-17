@@ -4,17 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.widget.ImageView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
-import com.google.zxing.ChecksumException;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.EncodeHintType;
-import com.google.zxing.FormatException;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.NotFoundException;
@@ -103,7 +99,7 @@ public class CodeCreator {
             bitmap.setPixels(pixels, 0, w, 0, 0, w, h);
             return bitmap;
         } catch (WriterException e) {
-            System.out.print(e);
+            e.printStackTrace();
             return null;
         }
     }

@@ -32,12 +32,10 @@ import android.widget.Toast;
 
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
-import com.google.zxing.client.android.HelpActivity;
 import com.google.zxing.client.android.Intents;
 import com.google.zxing.client.android.PreferencesActivity;
 import com.google.zxing.client.android.share.ShareActivity;
 
-import cn.demomaster.qdzxing.MainActivity;
 import cn.demomaster.qdzxing.R;
 import cn.demomaster.qdzxinglibrary.ScanHelper;
 import cn.demomaster.qdzxinglibrary.ScanMakerView;
@@ -151,8 +149,8 @@ public class MyCaptureActivity extends Activity {
                 startActivity(intent);
                 break;
             case R.id.menu_help:
-                intent.setClassName(this, HelpActivity.class.getName());
-                startActivity(intent);
+               /* intent.setClassName(this, HelpActivity.class.getName());
+                startActivity(intent);*/
                 break;
             default:
                 return super.onOptionsItemSelected(item);

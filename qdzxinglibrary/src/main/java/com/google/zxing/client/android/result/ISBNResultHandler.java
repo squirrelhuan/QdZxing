@@ -63,7 +63,7 @@ public final class ISBNResultHandler extends ResultHandler {
         openBookSearch(isbnResult.getISBN());
         break;
       case 2:
-        searchBookContents(isbnResult.getISBN());
+       // searchBookContents(isbnResult.getISBN());
         break;
       case 3:
         openURL(fillInCustomSearchURL(isbnResult.getISBN()));

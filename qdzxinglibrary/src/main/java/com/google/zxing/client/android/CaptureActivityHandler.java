@@ -59,7 +59,7 @@ public class CaptureActivityHandler extends Handler {
     private State state;
     private final CameraManager cameraManager;
 
-    public static enum State {
+    public enum State {
         PREVIEW,
         SUCCESS,
         DONE
@@ -95,8 +95,7 @@ public class CaptureActivityHandler extends Handler {
 
     @Override
     public void handleMessage(Message message) {
-
-        Log.w(TAG, "handleMessage state="+state);
+        //Log.w(TAG, "handleMessage state="+state);
         if(message.what==R.id.restart_preview){
             restartPreviewAndDecode();
         }else if(message.what==R.id.decode_succeeded){

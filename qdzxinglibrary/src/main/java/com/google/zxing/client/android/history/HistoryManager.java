@@ -25,9 +25,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
@@ -295,6 +298,7 @@ public final class HistoryManager {
     }
   }
 
+  @RequiresApi(api = Build.VERSION_CODES.KITKAT)
   static Uri saveHistory(String history) {
     File bsRoot = new File(Environment.getExternalStorageDirectory(), "BarcodeScanner");
     File historyRoot = new File(bsRoot, "History");

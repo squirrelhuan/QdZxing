@@ -22,7 +22,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -374,8 +373,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
       intent.setClassName(this, PreferencesActivity.class.getName());
       startActivity(intent);
     }else if(item.getItemId()==R.id.menu_help){
-      intent.setClassName(this, HelpActivity.class.getName());
-      startActivity(intent);
+      /*intent.setClassName(this, HelpActivity.class.getName());
+      startActivity(intent);*/
     }else {
       return super.onOptionsItemSelected(item);
     }

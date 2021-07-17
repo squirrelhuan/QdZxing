@@ -16,11 +16,15 @@
 
 package com.google.zxing.client.android.wifi;
 
+import android.annotation.SuppressLint;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiEnterpriseConfig;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.zxing.client.result.WifiParsedResult;
 
@@ -170,6 +174,7 @@ public final class WifiConfigManager extends AsyncTask<WifiParsedResult,Object,O
   }
 
   // Adding a WPA2 enterprise (EAP) network
+  @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
   private static void changeNetworkWPA2EAP(WifiManager wifiManager, WifiParsedResult wifiResult) {
     WifiConfiguration config = changeNetworkCommon(wifiResult);
     // Hex passwords that are 64 bits long are not to be quoted.
@@ -197,7 +202,7 @@ public final class WifiConfigManager extends AsyncTask<WifiParsedResult,Object,O
   }
 
   private static Integer findNetworkInExistingConfig(WifiManager wifiManager, String ssid) {
-    Iterable<WifiConfiguration> existingConfigs = wifiManager.getConfiguredNetworks();
+    @SuppressLint("MissingPermission") Iterable<WifiConfiguration> existingConfigs = wifiManager.getConfiguredNetworks();
     if (existingConfigs != null) {
       for (WifiConfiguration existingConfig : existingConfigs) {
         String existingSSID = existingConfig.SSID;
