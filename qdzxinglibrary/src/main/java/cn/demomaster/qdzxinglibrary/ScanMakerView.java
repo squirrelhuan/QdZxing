@@ -137,14 +137,14 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         int width = canvas.getWidth();
         int height = canvas.getHeight();
 
-        float centerX = width/2;
-        float centerY = height/2;
+        float centerX = width/2f;
+        float centerY = height/2f;
 
         // Draw the exterior (i.e. outside the framing rect) darkened
         canvas.drawColor(maskColor);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         paint.setColor(Color.BLACK);
-        RectF rectF = new RectF(centerX-markerWidth/2, centerY-markerHeight/2, centerX+markerWidth/2, centerY+markerHeight/2);
+        RectF rectF = new RectF(centerX-markerWidth/2f, centerY-markerHeight/2f, centerX+markerWidth/2f, centerY+markerHeight/2f);
         frame = new Rect((int) rectF.left,(int)rectF.top,(int)rectF.right,(int)rectF.bottom);
         canvas.drawRoundRect(rectF, roundRadius, roundRadius, paint);
         paint.setXfermode(null);
@@ -160,7 +160,7 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         paint.setAntiAlias(true);//使用抗锯齿功能
         //paint.setColor(Color.RED);    //设置画笔的颜色为绿色
         paint.setStyle(Paint.Style.FILL);//设置画笔类型为填充
-        /***********绘制圆弧*************/
+        //绘制圆弧
       /*  RectF rectf_head=new RectF(centerX-markerWidth/2, rectF.top, centerX+markerWidth/2, rectF.top+100);//确定外切矩形范围
         rectf_head.offset(0, 0);//使rectf_head所确定的矩形向右偏移100像素，向下偏移20像素
 

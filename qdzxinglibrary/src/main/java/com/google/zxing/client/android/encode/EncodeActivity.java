@@ -203,10 +203,10 @@ public final class EncodeActivity extends Activity {
         return;
       }
 
-      ImageView view = (ImageView) findViewById(R.id.image_view);
+      ImageView view = findViewById(R.id.image_view);
       view.setImageBitmap(bitmap);
 
-      TextView contents = (TextView) findViewById(R.id.contents_text_view);
+      TextView contents = findViewById(R.id.contents_text_view);
       if (intent.getBooleanExtra(Intents.Encode.SHOW_CONTENTS, true)) {
         contents.setText(qrCodeEncoder.getDisplayContents());
         setTitle(qrCodeEncoder.getTitle());

@@ -51,58 +51,43 @@ public final class ShareActivity extends Activity {
 
   private View clipboardButton;
 
-  private final View.OnClickListener contactListener = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-      intent.addFlags(Intents.FLAG_NEW_DOC);
-      startActivityForResult(intent, PICK_CONTACT);
+  private final View.OnClickListener contactListener = v -> {
+    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+    intent.addFlags(Intents.FLAG_NEW_DOC);
+    startActivityForResult(intent, PICK_CONTACT);
+  };
+
+  private final View.OnClickListener bookmarkListener = v -> {
+    Intent intent = new Intent(Intent.ACTION_PICK);
+    intent.addFlags(Intents.FLAG_NEW_DOC);
+    intent.setClassName(ShareActivity.this, BookmarkPickerActivity.class.getName());
+    startActivityForResult(intent, PICK_BOOKMARK);
+  };
+
+  private final View.OnClickListener appListener = v -> {
+    Intent intent = new Intent(Intent.ACTION_PICK);
+    intent.addFlags(Intents.FLAG_NEW_DOC);
+    intent.setClassName(ShareActivity.this, AppPickerActivity.class.getName());
+    startActivityForResult(intent, PICK_APP);
+  };
+
+  private final View.OnClickListener clipboardListener = v -> {
+    // Should always be true, because we grey out the clipboard button in onResume() if it's empty
+    CharSequence text = ClipboardInterface.getText(ShareActivity.this);
+    if (text != null) {
+      launchSearch(text.toString());
     }
   };
 
-  private final View.OnClickListener bookmarkListener = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      Intent intent = new Intent(Intent.ACTION_PICK);
-      intent.addFlags(Intents.FLAG_NEW_DOC);
-      intent.setClassName(ShareActivity.this, BookmarkPickerActivity.class.getName());
-      startActivityForResult(intent, PICK_BOOKMARK);
-    }
-  };
-
-  private final View.OnClickListener appListener = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      Intent intent = new Intent(Intent.ACTION_PICK);
-      intent.addFlags(Intents.FLAG_NEW_DOC);
-      intent.setClassName(ShareActivity.this, AppPickerActivity.class.getName());
-      startActivityForResult(intent, PICK_APP);
-    }
-  };
-
-  private final View.OnClickListener clipboardListener = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      // Should always be true, because we grey out the clipboard button in onResume() if it's empty
-      CharSequence text = ClipboardInterface.getText(ShareActivity.this);
-      if (text != null) {
-        launchSearch(text.toString());
+  private final View.OnKeyListener textListener = (view, keyCode, event) -> {
+    if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+      String text = ((TextView) view).getText().toString();
+      if (!text.isEmpty()) {
+        launchSearch(text);
       }
+      return true;
     }
-  };
-
-  private final View.OnKeyListener textListener = new View.OnKeyListener() {
-    @Override
-    public boolean onKey(View view, int keyCode, KeyEvent event) {
-      if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-        String text = ((TextView) view).getText().toString();
-        if (!text.isEmpty()) {
-          launchSearch(text);
-        }
-        return true;
-      }
-      return false;
-    }
+    return false;
   };
 
   private void launchSearch(String text) {

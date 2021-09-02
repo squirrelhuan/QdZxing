@@ -73,7 +73,7 @@ public class ScanHelper {
         @Override
         public void handleDecode(Result obj, Bitmap barcode, float scaleFactor) {
             Log.i(TAG, "扫码完成：" + obj == null ? "null" : obj.toString());//震动
-            Vibrator vibrator = (Vibrator) mContext.getSystemService(mContext.VIBRATOR_SERVICE);
+            Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
             long[] patter = {50, 50};
             vibrator.vibrate(patter, -1);
             if(mOnScanResultListenerSub!=null)
@@ -89,12 +89,7 @@ public class ScanHelper {
     /**
      * 扫描到的疑似点
      */
-    public ResultPointCallback resultPointCallback= new ResultPointCallback() {
-        @Override
-        public void foundPossibleResultPoint(ResultPoint resultPoint) {
-            mOnScanResultListener.foundPossiblePoint(resultPoint);
-        }
-    };
+    public ResultPointCallback resultPointCallback= resultPoint -> mOnScanResultListener.foundPossiblePoint(resultPoint);
     /**
      * 扫描结果监听器
      * @param onScanResultListener
@@ -176,6 +171,6 @@ public class ScanHelper {
         Camera.Parameters parameter;
         parameter = getCameraManager(context).getCamera().getParameters();
         String state = parameter.getFlashMode();
-        return state==null?false:!state.equals(Camera.Parameters.FLASH_MODE_OFF);
+        return state != null && !state.equals(Camera.Parameters.FLASH_MODE_OFF);
     }
 }

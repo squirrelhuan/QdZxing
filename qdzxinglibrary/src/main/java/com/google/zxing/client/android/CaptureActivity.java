@@ -70,7 +70,6 @@ import java.util.Map;
 
 import cn.demomaster.qdzxinglibrary.R;
 
-
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a
  * viewfinder to help the user place the barcode correctly, shows feedback as the image processing
@@ -158,11 +157,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     // off screen.
     cameraManager = new CameraManager(getApplication());
 
-    viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
+    viewfinderView = findViewById(R.id.viewfinder_view);
     viewfinderView.setCameraManager(cameraManager);
 
     resultView = findViewById(R.id.result_view);
-    statusView = (TextView) findViewById(R.id.status_view);
+    statusView = findViewById(R.id.status_view);
 
     handler = null;
     lastResult = null;
@@ -253,7 +252,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     }
 
-    SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
+    SurfaceView surfaceView = findViewById(R.id.preview_view);
     SurfaceHolder surfaceHolder = surfaceView.getHolder();
     if (hasSurface) {
       // The activity was paused but not stopped, so the surface still exists. Therefore
@@ -310,7 +309,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     cameraManager.closeDriver();
     //historyManager = null; // Keep for onActivityResult
     if (!hasSurface) {
-      SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
+      SurfaceView surfaceView = findViewById(R.id.preview_view);
       SurfaceHolder surfaceHolder = surfaceView.getHolder();
       surfaceHolder.removeCallback(this);
     }
@@ -536,7 +535,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     viewfinderView.setVisibility(View.GONE);
     resultView.setVisibility(View.VISIBLE);
 
-    ImageView barcodeImageView = (ImageView) findViewById(R.id.barcode_image_view);
+    ImageView barcodeImageView = findViewById(R.id.barcode_image_view);
     if (barcode == null) {
       /*barcodeImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(),
           R.drawable.launcher_icon));*/
@@ -544,18 +543,18 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
       barcodeImageView.setImageBitmap(barcode);
     }
 
-    TextView formatTextView = (TextView) findViewById(R.id.format_text_view);
+    TextView formatTextView = findViewById(R.id.format_text_view);
     formatTextView.setText(rawResult.getBarcodeFormat().toString());
 
-    TextView typeTextView = (TextView) findViewById(R.id.type_text_view);
+    TextView typeTextView = findViewById(R.id.type_text_view);
     typeTextView.setText(resultHandler.getType().toString());
 
     DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-    TextView timeTextView = (TextView) findViewById(R.id.time_text_view);
+    TextView timeTextView = findViewById(R.id.time_text_view);
     timeTextView.setText(formatter.format(rawResult.getTimestamp()));
 
 
-    TextView metaTextView = (TextView) findViewById(R.id.meta_text_view);
+    TextView metaTextView = findViewById(R.id.meta_text_view);
     View metaTextViewLabel = findViewById(R.id.meta_text_view_label);
     metaTextView.setVisibility(View.GONE);
     metaTextViewLabel.setVisibility(View.GONE);
@@ -576,12 +575,12 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     }
 
     CharSequence displayContents = resultHandler.getDisplayContents();
-    TextView contentsTextView = (TextView) findViewById(R.id.contents_text_view);
+    TextView contentsTextView = findViewById(R.id.contents_text_view);
     contentsTextView.setText(displayContents);
     int scaledSize = Math.max(22, 32 - displayContents.length() / 4);
     contentsTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaledSize);
 
-    TextView supplementTextView = (TextView) findViewById(R.id.contents_supplement_text_view);
+    TextView supplementTextView = findViewById(R.id.contents_supplement_text_view);
     supplementTextView.setText("");
     supplementTextView.setOnClickListener(null);
     if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
@@ -593,7 +592,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     }
 
     int buttonCount = resultHandler.getButtonCount();
-    ViewGroup buttonView = (ViewGroup) findViewById(R.id.result_button_view);
+    ViewGroup buttonView = findViewById(R.id.result_button_view);
     buttonView.requestFocus();
     for (int x = 0; x < ResultHandler.MAX_BUTTON_COUNT; x++) {
       TextView button = (TextView) buttonView.getChildAt(x);

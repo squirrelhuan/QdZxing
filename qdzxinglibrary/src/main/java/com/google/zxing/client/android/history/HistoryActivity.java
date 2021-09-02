@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -146,13 +145,10 @@ public final class HistoryActivity extends ListActivity {
       AlertDialog.Builder builder = new AlertDialog.Builder(this);
       builder.setMessage(R.string.msg_sure);
       builder.setCancelable(true);
-      builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int i2) {
-          historyManager.clearHistory();
-          dialog.dismiss();
-          finish();
-        }
+      builder.setPositiveButton(R.string.button_ok, (dialog, i2) -> {
+        historyManager.clearHistory();
+        dialog.dismiss();
+        finish();
       });
       builder.setNegativeButton(R.string.button_cancel, null);
       builder.show();

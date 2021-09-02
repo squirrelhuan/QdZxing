@@ -21,6 +21,7 @@ import com.google.zxing.client.android.DecodeFormatManager;
 import com.google.zxing.client.android.PreferencesActivity;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.oned.Code128Writer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
@@ -31,6 +32,37 @@ import java.util.Hashtable;
 import java.util.Map;
 
 public class CodeCreator {
+    /**
+     * 生成条形码
+     * @param content
+     * @param w
+     * @param h
+     * @return
+     */
+    public static Bitmap creatBarCode(String content,int w, int h){
+        try {
+            BitMatrix bitMatrix = new Code128Writer().encode(content, BarcodeFormat.CODE_128, w, h, null);
+           // MatrixToImageWriter.writeToStream(bitMatrix, "png", new FileOutputStream(new File(“D://code12kk8_123456789.png”)));
+            int[] pixels = new int[w * h];
+            for (int y = 0; y < h; y++) {
+                for (int x = 0; x < w; x++) {
+                        if (bitMatrix.get(x, y)) {
+                            pixels[y * w + x] = 0xff000000;
+                        } else {
+                            pixels[y * w + x] = 0xffffffff;
+                        }
+                }
+            }
+            Bitmap bitmap = Bitmap.createBitmap(w, h,
+                    Bitmap.Config.ARGB_8888);
+            bitmap.setPixels(pixels, 0, w, 0, 0, w, h);
+            return bitmap;
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+       return null;
+    }
+
     /*生成二维码*/
     public static Bitmap createQRCode(String content, int w, int h, Bitmap logo) {
         if (TextUtils.isEmpty(content)) {
@@ -60,7 +92,7 @@ public class CodeCreator {
         }
 
         /*指定为UTF-8*/
-        Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
+        Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
         //容错级别
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);

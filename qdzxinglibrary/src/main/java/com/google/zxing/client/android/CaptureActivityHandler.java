@@ -34,7 +34,6 @@ import android.util.Log;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
-import com.google.zxing.ResultPoint;
 import com.google.zxing.ResultPointCallback;
 import com.google.zxing.client.android.camera.CameraManager;
 
@@ -66,12 +65,9 @@ public class CaptureActivityHandler extends Handler {
     }
 
     public ResultPointCallback getResultPointCallback(){
-        ResultPointCallback resultPointCallback = new ResultPointCallback() {
-            @Override
-            public void foundPossibleResultPoint(ResultPoint point) {
-                if(ScanHelper.getInstance().resultPointCallback!=null)
-                ScanHelper.getInstance().resultPointCallback.foundPossibleResultPoint(point);
-            }
+        ResultPointCallback resultPointCallback = point -> {
+            if(ScanHelper.getInstance().resultPointCallback!=null)
+            ScanHelper.getInstance().resultPointCallback.foundPossibleResultPoint(point);
         };
         return resultPointCallback;
     }

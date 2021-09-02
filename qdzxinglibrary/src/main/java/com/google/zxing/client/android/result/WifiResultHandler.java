@@ -41,10 +41,8 @@ public final class WifiResultHandler extends ResultHandler {
 
   private static final String TAG = WifiResultHandler.class.getSimpleName();
 
-  private final Activity parent;
   public WifiResultHandler(Activity activity, ParsedResult result) {
     super(activity, result);
-    parent = activity;
   }
 
   @Override
@@ -68,12 +66,7 @@ public final class WifiResultHandler extends ResultHandler {
         return;
       }
       final Activity activity = getActivity();
-      activity.runOnUiThread(new Runnable() {
-        @Override
-        public void run() {
-          Toast.makeText(activity.getApplicationContext(), R.string.wifi_changing_network, Toast.LENGTH_SHORT).show();
-        }
-      });
+      activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), R.string.wifi_changing_network, Toast.LENGTH_SHORT).show());
       new WifiConfigManager(wifiManager).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, wifiResult);
       ScanHelper.getInstance().restartDelay(0L);
     }
